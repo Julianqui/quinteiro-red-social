@@ -35,24 +35,47 @@ export const FeedPageClient: React.FC<IFeedPageClientProps> = ({
   // Inicializar datos en Redux
   useEffect(() => {
     dispatch(setPosts(initialPosts));
+  }, [dispatch, initialPosts]);
 
-    // Convertir session user a nuestro formato IUser
-    if (session.user && !currentUser) {
-      const user: IUser = {
-        id: (session.user as { id?: string }).id || '1',
-        name: session.user.name || 'Usuario',
-        email: session.user.email || '',
-        username: session.user.email?.split('@')[0] || 'user',
-        avatar: session.user.image || undefined,
-        bio: 'Usuario de la red social',
-      };
-      dispatch(setUser(user));
+  // Sincronizar usuario de la sesión con Redux
+  useEffect(() => {
+    if (session.user) {
+      const sessionEmail = session.user.email || '';
+      const currentEmail = currentUser?.email || '';
+      
+      // Solo actualizar si el email cambió o no hay usuario
+      if (!currentUser || sessionEmail !== currentEmail) {
+        const user: IUser = {
+          id: (session.user as { id?: string }).id || '1',
+          name: session.user.name || 'Usuario',
+          email: sessionEmail,
+          username: sessionEmail.split('@')[0] || 'user',
+          avatar: session.user.image || undefined,
+          bio: 'Usuario de la red social',
+        };
+        dispatch(setUser(user));
+      }
     }
-  }, [dispatch, initialPosts, session, currentUser]);
+  }, [session, currentUser, dispatch]);
 
   const handleLogout = async () => {
+    // Primero hacer logout de NextAuth
+    await signOut({ redirect: false });
+    
+    // Limpiar Redux state
     dispatch(logout());
-    await signOut({ callbackUrl: '/login' });
+    
+    // Limpiar localStorage manualmente para forzar limpieza completa
+    try {
+      localStorage.removeItem('persist:root');
+      // También limpiar cualquier otro dato relacionado
+      localStorage.clear();
+    } catch (error) {
+      console.error('Error clearing localStorage:', error);
+    }
+    
+    // Redirigir al login
+    window.location.href = '/login';
   };
 
   const handleCreatePost = (content: string, mediaUrl?: string) => {

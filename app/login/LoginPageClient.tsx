@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { LoginForm } from '@/components/molecules';
@@ -10,6 +10,16 @@ export const LoginPageClient: React.FC = () => {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+
+  // Limpiar localStorage al montar el componente de login
+  useEffect(() => {
+    try {
+      // Limpiar el estado persistido anterior
+      localStorage.removeItem('persist:root');
+    } catch (error) {
+      console.error('Error clearing localStorage on login mount:', error);
+    }
+  }, []);
 
   const handleCredentialsLogin = async (email: string, password: string) => {
     setLoading(true);
