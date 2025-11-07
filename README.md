@@ -26,6 +26,7 @@ Aplicación de red social construida con **Next.js 15**, **Tailwind CSS 4**, **R
 - [📁 Estructura del Proyecto](#-estructura-del-proyecto)
 - [🔑 Credenciales de Prueba](#-credenciales-de-prueba)
 - [🎨 Scripts Disponibles](#-scripts-disponibles)
+- [🚀 Deployment en Vercel](#-deployment-en-vercel) ⭐ **Variables de Entorno**
 - [📦 Dependencias Principales](#-dependencias-principales)
 - [🐛 Solución de Problemas](#-solución-de-problemas)
 
@@ -273,9 +274,11 @@ Ejemplos:
 
 ## 📖 Documentación Adicional
 
-- **Testing**: Lee **[TESTING.md](./TESTING.md)** para guía completa de testing
-- **Storybook**: Lee **[STORYBOOK.md](./STORYBOOK.md)** para documentación de componentes
-- **Internacionalización**: Los textos están centralizados en `locales/es.ts` y se acceden con `t('clave')`
+- 🧪 **Testing**: Lee **[TESTING.md](./TESTING.md)** para guía completa de testing
+- 📚 **Storybook**: Lee **[STORYBOOK.md](./STORYBOOK.md)** para documentación de componentes
+- 🚀 **Deployment**: Lee **[DEPLOYMENT.md](./DEPLOYMENT.md)** para deployment en Vercel
+- 🌐 **Internacionalización**: Los textos están centralizados en `locales/es.ts` y se acceden con `t('clave')`
+- 🔧 **Variables de Entorno**: Ver `env.example.txt` para configuración
 
 ## 🎨 Scripts Disponibles
 
@@ -380,24 +383,74 @@ npm run storybook
 - **Images**: Configurado para usar imágenes de `i.pravatar.cc` y `images.unsplash.com`
 - **Persistencia**: Redux Persist guarda auth y theme en localStorage
 
-## 🚀 Deployment
+## 🚀 Deployment en Vercel
 
-### Vercel (Recomendado)
+### ⚠️ IMPORTANTE: Variables de Entorno
+
+Antes de deployar, **debes configurar** estas variables en Vercel:
+
+#### 1. Generar NEXTAUTH_SECRET
+
+```bash
+# En tu terminal, genera un secret:
+openssl rand -base64 32
+```
+
+#### 2. Configurar en Vercel
+
+1. Ve a tu proyecto en Vercel
+2. **Settings** → **Environment Variables**
+3. Agrega estas variables:
+
+| Variable | Value | Environment |
+|----------|-------|-------------|
+| `NEXTAUTH_SECRET` | El secret generado arriba | Production, Preview, Development |
+| `NEXTAUTH_URL` | `https://tu-app.vercel.app` | Production, Preview |
+
+### 📦 Deploy desde GitHub
+
+1. Conecta tu repo en [Vercel Dashboard](https://vercel.com/dashboard)
+2. Configura las variables de entorno (ver arriba)
+3. Click en **Deploy**
+
+### 💻 Deploy desde CLI
 
 ```bash
 # Instala Vercel CLI
 npm i -g vercel
 
+# Login
+vercel login
+
 # Deploy
 vercel
+
+# Deploy a producción
+vercel --prod
 ```
 
-### Build Manual
+### ✅ Verificación Post-Deploy
 
-```bash
-npm run build
-npm start
-```
+Después del deploy, verifica:
+
+- ✅ La página de login se carga (no la página por defecto de Next.js)
+- ✅ Puedes iniciar sesión con cualquier email/password
+- ✅ El feed funciona correctamente
+
+### 🐛 Si ves la página por defecto de Next.js
+
+**Causa:** Variables de entorno no configuradas.
+
+**Solución:**
+
+1. Configura `NEXTAUTH_SECRET` y `NEXTAUTH_URL` en Vercel
+2. En Vercel: **Deployments** → **...** → **Redeploy**
+
+### 📚 Documentación Completa
+
+Para instrucciones detalladas, troubleshooting y más, lee:
+
+👉 **[DEPLOYMENT.md](./DEPLOYMENT.md)** - Guía completa de deployment
 
 ## 👨‍💻 Desarrollo
 
@@ -436,8 +489,10 @@ Creado como Challenge Técnico demostrando:
 
 ## 🔗 Enlaces Útiles
 
-- 📖 **[TESTING.md](./TESTING.md)** - Guía completa de testing
+- 🧪 **[TESTING.md](./TESTING.md)** - Guía completa de testing
 - 📚 **[STORYBOOK.md](./STORYBOOK.md)** - Documentación de Storybook
+- 🚀 **[DEPLOYMENT.md](./DEPLOYMENT.md)** - Guía de deployment en Vercel
+- 🔧 **[env.example.txt](./env.example.txt)** - Ejemplo de variables de entorno
 - 🌐 **[Aplicación](http://localhost:3000)** - Desarrollo local
 - 📊 **[Storybook](http://localhost:6006)** - Visualización de componentes
 
