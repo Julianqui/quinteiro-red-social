@@ -37,6 +37,7 @@ export const CommentItem: React.FC<ICommentItemProps> = ({
         src={comment.author.avatar}
         alt={comment.author.name}
         size="sm"
+        className="hidden sm:block"
       />
       <div className="flex-1">
         <div className="bg-gray-100 dark:bg-gray-800 rounded-2xl px-4 py-2">

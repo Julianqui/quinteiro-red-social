@@ -73,6 +73,7 @@ export const CreatePostForm: React.FC<ICreatePostFormProps> = ({
           src={currentUser.avatar}
           alt={currentUser.name}
           size="md"
+          className="hidden sm:block"
         />
         <div className="flex-1">
             <Textarea

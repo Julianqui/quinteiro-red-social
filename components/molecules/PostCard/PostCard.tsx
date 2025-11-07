@@ -60,6 +60,7 @@ export const PostCard: React.FC<IPostCardProps> = ({
           src={post.author.avatar}
           alt={post.author.name}
           size="md"
+          className="hidden sm:block"
         />
         <div className="flex-1">
           <h3 className="font-semibold text-gray-900 dark:text-gray-100">{post.author.name}</h3>
@@ -101,33 +102,34 @@ export const PostCard: React.FC<IPostCardProps> = ({
       {showComments && (
         <div className="px-4 py-3 border-t border-gray-100 dark:border-gray-800 bg-gray-50 dark:bg-gray-950">
           {currentUser && (
-            <div className="flex gap-2 mb-4">
-              <Avatar
-                src={currentUser.avatar}
-                alt={currentUser.name}
-                size="sm"
-              />
-              <div className="flex-1 flex gap-2">
-                <Textarea
-                  id={`comment-${post.id}`}
-                  name="comment"
-                  value={newComment}
-                  onChange={(e) => setNewComment(e.target.value)}
-                  placeholder={t('comments.writeComment')}
-                  rows={2}
-                  className="flex-1"
-                />
-                <Button
-                  onClick={handleAddComment}
-                  variant="primary"
+              <div className="flex gap-2 mb-4">
+                <Avatar
+                  src={currentUser.avatar}
+                  alt={currentUser.name}
                   size="sm"
-                  disabled={!newComment.trim()}
-                  className="self-end"
-                >
-                  {t('buttons.send')}
-                </Button>
+                  className="hidden sm:block"
+                />
+                <div className="flex-1 flex flex-col sm:flex-row gap-2">
+                  <Textarea
+                    id={`comment-${post.id}`}
+                    name="comment"
+                    value={newComment}
+                    onChange={(e) => setNewComment(e.target.value)}
+                    placeholder={t('comments.writeComment')}
+                    rows={2}
+                    className="flex-1"
+                  />
+                  <Button
+                    onClick={handleAddComment}
+                    variant="primary"
+                    size="sm"
+                    disabled={!newComment.trim()}
+                    className="self-end sm:self-end w-full sm:w-auto"
+                  >
+                    {t('buttons.send')}
+                  </Button>
+                </div>
               </div>
-            </div>
           )}
 
           <CommentList
